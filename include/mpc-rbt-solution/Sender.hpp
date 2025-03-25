@@ -13,18 +13,22 @@ namespace Sender
 class Node : public Socket::UDP
 {
 public:
-  explicit Node(const Utils::Config::Sender & senderConfig)
-  : Socket::UDP(senderConfig.localPort),
-    config(senderConfig),
-    timer_period(config.sendingPeriodMillis)
+ explicit Node(const Utils::Config::Sender & senderConfig)
+  : Socket::UDP(senderConfig.localPort), config(senderConfig)
   {
-    UNIMPLEMENTED(__PRETTY_FUNCTION__);
+    create();
+    configure();
+    bind();
+    callback = [this] {onDataTimerTick();};
   }
+
 
   void run();
 
 private:
   void onDataTimerTick();
+
+ // std::unique_ptr<Socket::Socket> socket;
 
   Utils::Message data{};
 

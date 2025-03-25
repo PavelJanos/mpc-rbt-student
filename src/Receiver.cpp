@@ -1,3 +1,4 @@
+#include "mpc-rbt-solution/util/Utils.hpp"
 #include <mpc-rbt-solution/Receiver.hpp>
 
 void Receiver::Node::run()
@@ -18,7 +19,8 @@ void Receiver::Node::run()
 
 void Receiver::Node::onDataReceived(const Socket::IPFrame & frame)
 {
-  UNIMPLEMENTED(__PRETTY_FUNCTION__);
+    Utils::Message::deserialize(frame,data);
+    RCLCPP_INFO(logger, "\n\tstamp: %ld", data.timestamp);
+    RCLCPP_INFO(logger, "Message: %f %f %f", data.x,data.y,data.z);
 
-  RCLCPP_INFO(logger, "\n\tstamp: %ld", data.timestamp);
 }
